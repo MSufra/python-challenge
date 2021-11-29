@@ -2,38 +2,38 @@
 import os
 import csv
 
-#Create file path
+#Creates file path, reads the csv and writes the dates and profits to lists
 filepath = os.path.join('.', 'Resources', 'budget_data.csv')
-#Read csv file
 date = []
 profloss = []
 with open(filepath) as csvfile:
 
     csvread = csv.reader(csvfile, delimiter = ',')
-    print(csvread)
 
     csv_header = next(csvread)
-    print(f"CSV Header: {csv_header}")
+   
 
     for row in csvread:
         date.append(row[0])
         profloss.append(row[1])
-
+#converts the profits to an integer
 profloss = [int(i) for i in profloss ]
 
+#finds the total profit/loss
 total = sum(profloss)
-    
+#find the number of months    
 months = len(date)
 
-#finds the changes
+#calculates the changes in profit/loss for each month
 change = []
 
 for j in range(1, len(profloss)):
     #print(j, profloss[j], profloss[j-1])
     change.append(profloss[j] - profloss[j-1])
-
+#calculates average change in profit
 avg = sum(change)/len(change)
 
+#finds the months with the greatest profit and greatest loss
 maxprof = 0
 for idx in range(0,len(change)):
     if maxprof< change[idx]:
@@ -46,8 +46,9 @@ for idx in range(0,len(change)):
         minprof=change[idx]
         minidx = idx
 
-#print
-
+#prints the analysis
+print('Financial An\alysis')
+print('----------------------------')
 print(f'Total Months: {months}')
 
 print(f'Total:${total}')
@@ -58,7 +59,7 @@ print(f'Greatest Increase in Profits: {date[maxidx+1]} (${maxprof})')
 
 print(f'Greatest Dencrease in Profits: {date[minidx+1]} (${minprof})')
 
-
+#writes the analysis to a text file
 output_path = os.path.join('.', 'Analysis', 'analysis.txt')
 
 with open (output_path,'w') as output:
